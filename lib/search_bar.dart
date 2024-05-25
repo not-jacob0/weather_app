@@ -8,7 +8,8 @@ class WeatherSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.0),
+      width: 360,
+      padding: EdgeInsets.symmetric(horizontal: 0.0),
       child: SearchBar(
         controller: controller,
         hintText: "Szukaj",
