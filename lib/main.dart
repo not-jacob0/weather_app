@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/search_bar.dart';
+import 'package:weather_app/weatherapi/weather_api.dart';
+import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -29,6 +31,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  WeatherApi weatherApi = WeatherApi();
+  Weather? weather;
+
+  @override
+  void initState() {
+    super.initState();
+    getWeather();
+  }
+
+  void getWeather() async {
+    // poki co tylko dla wroclawia pobiera, trzeba dodac funkcje wykrywania lokalizacji
+    Weather weathern = await weatherApi.getWeather("Wrocław");
+    setState(() {
+      weather = weathern;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //Temperature
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Text("24\u2103\nSłonecznie ",
+              child: Text("${weather?.temperature.round()}\u2103\n${weather?.state}",
               textAlign: TextAlign.center,
                 style: MyTextStyle(
                   fontSize: 14.0,
