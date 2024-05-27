@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/search_bar.dart';
-import 'package:weather_app/weatherapi/weather_api.dart';
+import 'package:weather_app/services/weather_api.dart';
+import 'package:weather_app/services/location_service.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
@@ -33,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   WeatherApi weatherApi = WeatherApi();
   Weather? weather;
+  String city = "Białystok";
 
   @override
   void initState() {
@@ -41,11 +43,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void getWeather() async {
-    // poki co tylko dla wroclawia pobiera, trzeba dodac funkcje wykrywania lokalizacji
-    Weather weathern = await weatherApi.getWeather("Wrocław");
-    setState(() {
-      weather = weathern;
-    });
+    try {
+      Location location = Location();
+      city = await location.getCity();
+      setState(() {});
+      Weather fetchedweather = await weatherApi.getWeather(city);
+      setState(() {
+        weather = fetchedweather;
+      });
+    } catch (exn) {
+      print(exn);
+    }
   }
 
   @override
@@ -74,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.only(top: 32.0),
               child: CityTitle(
-                text: "W R O C Ł A W",
+                text: city.toUpperCase(),
               ),
             ),
       
