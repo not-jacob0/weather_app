@@ -5,6 +5,8 @@ import 'package:weather_app/services/location_service.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weather_app/hourly_weather.dart';
+import 'package:weather_app/weather_tile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,13 +15,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -56,6 +57,26 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  //testowe wartości
+  List<HourlyWeather> hourlyWeather = [
+    HourlyWeather(hour: 10, temperature: 24, description: "Słonecznie"),
+    HourlyWeather(hour: 11, temperature: 19, description: "Burza"),
+    HourlyWeather(hour: 12, temperature: 18, description: "Zachmurzenie"),
+    HourlyWeather(hour: 13, temperature: 20, description: "Pochmurno"),
+    HourlyWeather(hour: 14, temperature: 22, description: "Słonecznie"),
+    HourlyWeather(hour: 15, temperature: 23, description: "Lekkie opady deszczu"),
+    HourlyWeather(hour: 16, temperature: 22, description: "Pochmurno"),
+    HourlyWeather(hour: 17, temperature: 21, description: "Burza"),
+    HourlyWeather(hour: 18, temperature: 20, description: "Słabe opady deszczu"),
+    HourlyWeather(hour: 19, temperature: 19, description: "Zachmurzenie"),
+    HourlyWeather(hour: 20, temperature: 18, description: "Słabe opady śniegu"),
+    HourlyWeather(hour: 21, temperature: 17, description: "Pochmurno"),
+    HourlyWeather(hour: 22, temperature: 16, description: "Burza"),
+    HourlyWeather(hour: 23, temperature: 15, description: "Deszcz ze śniegiem"),
+    HourlyWeather(hour: 24, temperature: 14, description: "Zachmurzenie"),
+  ];
+
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -65,17 +86,20 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             
             //Search bar
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed:() {},
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 48.0),
-                  child: WeatherSearchBar(),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 48.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.menu),
+                    onPressed:() {},
+                  ),
+              
+                  WeatherSearchBar(),
+                  
+                ],
+              ),
             ),
             
             //City name
@@ -122,9 +146,22 @@ class _MyHomePageState extends State<MyHomePage> {
       
             Expanded(
               child: TabBarView(
+                
                 children: [
                   Text("TERAZ"),
-                  Text("GODZINOWA"),
+
+
+                    ListView.builder(
+                      itemCount: hourlyWeather.length,
+                      itemBuilder: (BuildContext context, int index) => 
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: WeatherTile(weather: hourlyWeather[index],
+                        ),
+                      )
+                  ),
+
+
                   Text("NA 16 DNI")
                 ]
                 ),
