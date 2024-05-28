@@ -6,7 +6,6 @@ import 'package:weather_app/services/location_service.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/weather_classes.dart';
 import 'package:weather_app/weather_tile.dart';
 
 void main() {
@@ -34,7 +33,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   WeatherApi weatherApi = WeatherApi();
-  Weather? weather;
+  CurrentWeather? currentWeather;
+  List<HourlyWeather?>? hourlyWeatherList;
   String city = "";
   final _controller = TextEditingController();
 
@@ -47,13 +47,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void getWeather(String cityToCheck) async {
     try {
       setState(() {});
-      Weather fetchedweather = await weatherApi.getWeather(cityToCheck);
+      CurrentWeather fetchedCurrWeather = await weatherApi.getCurrentWeather(cityToCheck);
+      List<HourlyWeather> fetchedHourlyWeather = await weatherApi.getHourlyWeather(cityToCheck);
       setState(() {
-        weather = fetchedweather;
+        currentWeather = fetchedCurrWeather;
+        hourlyWeatherList= fetchedHourlyWeather;
       });
       city = cityToCheck;
     } catch(e) {
-      print("blad pozdor");
+      print("Błąd pobierania danych o pogodzie: $e");
     }
   }
 
@@ -67,26 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  //testowe wartości
-  List<HourlyWeather> hourlyWeather = [
-    HourlyWeather(hour: 10, temperature: 24, description: "Słonecznie"),
-    HourlyWeather(hour: 11, temperature: 19, description: "Burza"),
-    HourlyWeather(hour: 12, temperature: 18, description: "Zachmurzenie"),
-    HourlyWeather(hour: 13, temperature: 20, description: "Pochmurno"),
-    HourlyWeather(hour: 14, temperature: 22, description: "Słonecznie"),
-    HourlyWeather(
-        hour: 15, temperature: 23, description: "Lekkie opady deszczu"),
-    HourlyWeather(hour: 16, temperature: 22, description: "Pochmurno"),
-    HourlyWeather(hour: 17, temperature: 21, description: "Burza"),
-    HourlyWeather(
-        hour: 18, temperature: 20, description: "Słabe opady deszczu"),
-    HourlyWeather(hour: 19, temperature: 19, description: "Zachmurzenie"),
-    HourlyWeather(hour: 20, temperature: 18, description: "Słabe opady śniegu"),
-    HourlyWeather(hour: 21, temperature: 17, description: "Pochmurno"),
-    HourlyWeather(hour: 22, temperature: 16, description: "Burza"),
-    HourlyWeather(hour: 23, temperature: 15, description: "Deszcz ze śniegiem"),
-    HourlyWeather(hour: 00, temperature: 14, description: "Zachmurzenie"),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-                "${weather?.temperature.round()}\u2103\n${weatherDescription(weather?.state)}",
+                "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.state)}",
                 textAlign: TextAlign.center,
                 style: MyTextStyle(fontSize: 14.0, color: Colors.grey)),
           ),
@@ -152,12 +134,13 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: TabBarView(children: [
               Text("TERAZ"),
+
               ListView.builder(
-                  itemCount: hourlyWeather.length,
+                  itemCount: hourlyWeatherList?.length,
                   itemBuilder: (BuildContext context, int index) => Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: WeatherTile(
-                          weather: hourlyWeather[index],
+                          weather: hourlyWeatherList?[index],
                         ),
                       )),
               Text("NA 16 DNI")

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/digest_weather_data.dart';
-import 'package:weather_app/weather_classes.dart';
+import 'package:weather_app/models/weather_model.dart';
 
 class WeatherTile extends StatefulWidget {
-  HourlyWeather weather;
+  HourlyWeather? weather;
 
   WeatherTile({Key? key,required this.weather}) : super(key: key);
 
@@ -22,17 +21,17 @@ class _WeatherTileState extends State<WeatherTile> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween, // Wyrównanie elementów do krawędzi
         children: [
           Text(
-            '${widget.weather.hour}:00',
+            '${widget.weather?.hour}:00',
             style: const TextStyle(fontSize: 18.0),
           ),
           Row(
             children: [
               Text(
-                '${widget.weather.temperature}\u2103',
+                '${widget.weather?.temperature}\u2103',
                 style: const TextStyle(fontSize: 18.0),
               ),
               Lottie.asset(
-                animation(widget.weather.description),
+                animation(weatherDescription(widget.weather?.state)),
                 height: 40.0
                 
                 ),

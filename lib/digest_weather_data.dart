@@ -1,4 +1,5 @@
-String animation(String description) {
+String animation(String? description) {
+  if(description == null) return "";
   switch(description.toLowerCase()) {
     case "clear sky": return "assets/sun_animation.json";
     case "burza" : return "assets/storm_animation.json";
