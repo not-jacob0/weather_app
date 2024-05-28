@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/animation.dart';
-import 'package:weather_app/hourly_weather.dart';
+import 'package:weather_app/digest_weather_data.dart';
+import 'package:weather_app/weather_classes.dart';
 
 class WeatherTile extends StatefulWidget {
   HourlyWeather weather;

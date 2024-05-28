@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/digest_weather_data.dart';
 import 'package:weather_app/search_bar.dart';
 import 'package:weather_app/services/weather_api.dart';
 import 'package:weather_app/services/location_service.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/hourly_weather.dart';
+import 'package:weather_app/weather_classes.dart';
 import 'package:weather_app/weather_tile.dart';
 
 void main() {
@@ -35,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   WeatherApi weatherApi = WeatherApi();
   Weather? weather;
-  String city = "Białystok";
+  String city = "";
 
   @override
   void initState() {
@@ -73,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     HourlyWeather(hour: 21, temperature: 17, description: "Pochmurno"),
     HourlyWeather(hour: 22, temperature: 16, description: "Burza"),
     HourlyWeather(hour: 23, temperature: 15, description: "Deszcz ze śniegiem"),
-    HourlyWeather(hour: 24, temperature: 14, description: "Zachmurzenie"),
+    HourlyWeather(hour: 00, temperature: 14, description: "Zachmurzenie"),
   ];
 
 
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //Temperature
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Text("${weather?.temperature.round()}\u2103\n${weather?.state}",
+              child: Text("${weather?.temperature.round()}\u2103\n${weatherDescription(weather?.state)}",
               textAlign: TextAlign.center,
                 style: MyTextStyle(
                   fontSize: 14.0,
