@@ -61,8 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getWeatherFromLocation() async {
     try {
-      Location location = Location();
-      city = await location.getCity();
+      
+      city = await getCity();
       getWeather(city);
     } catch (exn) {
       print(exn);
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-                "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.state)}",
+                "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode)}",
                 textAlign: TextAlign.center,
                 style: MyTextStyle(fontSize: 14.0, color: Colors.grey)),
           ),
@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Text("TERAZ"),
 
               ListView.builder(
-                  itemCount: hourlyWeatherList?.length,
+                  itemCount: hourlyWeatherList?[0] == null ? 0 : hourlyWeatherList?.length,
                   itemBuilder: (BuildContext context, int index) => Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: WeatherTile(

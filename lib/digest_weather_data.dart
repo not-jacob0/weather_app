@@ -8,11 +8,11 @@ String animation(String? description) {
   }
 }
 
-String weatherDescription(String? description) {
-  if(description == null) return "";
+String weatherDescription(int? weatherCode) {
+  if(weatherCode == null) return "";
 
-  switch(description.toLowerCase()) {
-    case "clear sky": return "Słonecznie";
+  switch(weatherCode) {
+    case 0: return "Słonecznie";
     default: return "-";
   }
 }

@@ -1,14 +1,12 @@
 //tutaj beda zawarte najwazniejsze informacje o pogodzie
 
 class CurrentWeather {
-  String? city;
-  String state ;//stan pogody np. slonce, pada itp
+  int weatherCode ;//stan pogody np. slonce, pada itp
   double temperature;
   //mozna dodac co sie chce w sumie
 
   CurrentWeather ({
-    this.city,
-    required this.state,
+    required this.weatherCode,
     required this.temperature,
 
   });
@@ -16,9 +14,8 @@ class CurrentWeather {
   //konwertujemy plik json na dane
   factory CurrentWeather.fromJson(Map<String, dynamic> json) {
     return CurrentWeather(
-      city: json['name'],
-      state: json['weather'][0]['description'],
-      temperature: json['main']['temp'],
+      weatherCode: json['current']['weather_code'],
+      temperature: json['current']['temperature_2m'],
     );
   }
 
@@ -30,17 +27,17 @@ class HourlyWeather extends CurrentWeather {
 
   HourlyWeather({
     required this.hour,
-    required String state,
-    required double temperature,
+    required weatherCode,
+    required temperature,
 
-  }) : super(state: state, temperature: temperature);
+  }) : super(weatherCode: weatherCode, temperature: temperature);
 
     //konwertujemy plik json na dane
   factory HourlyWeather.fromJson(Map<String, dynamic> json,int index) {
     return HourlyWeather(
-      state: json['list'][index]['weather']['description'],
-      temperature: json['list'][index]['main']['temp'],
-      hour: DateTime.parse(json['list'][index]['dt_txt']).hour
+      weatherCode: json['hourly']['weather_code'][index],
+      temperature: json['hourly']['temperature_2m'][index],
+      hour: index % 24
     );
   }
 
@@ -51,9 +48,9 @@ class DailyWeather extends CurrentWeather {
 
   DailyWeather({
     required this.date,
-    required String state,
-    required double temperature
-  }) : super(state: state, temperature: temperature);
+    required weatherCode,
+    required temperature
+  }) : super(weatherCode: weatherCode, temperature: temperature);
 }
 
 //https://api.openweathermap.org/data/2.5/weather?q=Wroc%C5%82aw&appid=0943f00e7daf62d1b525cbc9d8f605e0&units=metric
