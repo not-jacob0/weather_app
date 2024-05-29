@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //Animation
           Lottie.asset(
-            "assets/sun_animation.json",
+            animation(currentWeather?.weatherCode),
             height: 150,
           ),
 

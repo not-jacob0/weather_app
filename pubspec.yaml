@@ -63,11 +63,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/sun_animation.json
     - assets/cloudy_animation.json
     - assets/storm_animation.json
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+    - assets/sun_animation.json
+    - assets/snow_animation.json
+    - assets/rain_animation.json
+    - assets/partly_cloudy_animation.json
+    - assets/fog_animation.json
+    - assets/loading_animation.json
+  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
