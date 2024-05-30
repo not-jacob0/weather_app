@@ -15,7 +15,10 @@ class WeatherApi {
 
     if (response.statusCode == 200) { //200 oznacza sukces
       final json = jsonDecode(response.body);
-      return CurrentWeather.fromJson(json);
+
+      int currentHour = DateTime.parse(json['current']['time']).hour;
+
+      return CurrentWeather.fromJson(json,currentHour);
     } else {
       throw Exception('Failed to load current weather data');
     }
