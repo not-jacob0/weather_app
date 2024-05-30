@@ -31,7 +31,7 @@ class _WeatherTileState extends State<WeatherTile> {
                 style: const TextStyle(fontSize: 18.0),
               ),
               Lottie.asset(
-                animation(widget.weather?.weatherCode),
+                animation(widget.weather?.weatherCode,widget.weather?.day),
                 height: 40.0
                 
                 ),

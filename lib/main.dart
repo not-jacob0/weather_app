@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //Animation
           Lottie.asset(
-            animation(currentWeather?.weatherCode),
+            animation(currentWeather?.weatherCode,currentWeather?.day),
             height: 150,
           ),
 
@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-                "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode)}",
+                "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode,currentWeather?.day)}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14.0, 

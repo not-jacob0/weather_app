@@ -1,4 +1,4 @@
-String animation(int? weatherCode) {
+String animation(int? weatherCode, bool? day) {
   if(weatherCode == null) return "assets/loading_animation.json";
   switch(weatherCode) {
     case 3: return "assets/cloudy_animation.json"; 
@@ -8,7 +8,7 @@ String animation(int? weatherCode) {
     case 99: return "assets/storm_animation.json";
 
     case 1:
-    case 0: return "assets/sun_animation.json";
+    case 0: return (day == null) ? "assets/sun_animation.json" : (day ? "assets/sun_animation.json" : "assets/moon_animation.json");
 
     case 71:
     case 73:
@@ -28,10 +28,10 @@ String animation(int? weatherCode) {
     case 80:
     case 81:
     case 82:
-    case 5: return "assets/rain_animation.json";
+    case 5: return (day == null) ? "assets/rain_animation.json" : (day ? "assets/rain_animation.json" : "assets/moon_rain_animation.json");
 
 
-    case 2: return "assets/partly_cloudy_animation.json";
+    case 2: return (day == null) ? "assets/partly_cloudy_animation.json" : (day ? "assets/partly_cloudy_animation.json" : "assets/moon_cloudy_animation.json");
 
     case 45:
     case 48: return "assets/fog_animation.json";
@@ -40,7 +40,7 @@ String animation(int? weatherCode) {
   }
 }
 
-String weatherDescription(int? weatherCode) {
+String weatherDescription(int? weatherCode, bool? day) {
   if (weatherCode == null) return "";
 
   switch (weatherCode) {

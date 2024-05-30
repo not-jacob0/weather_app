@@ -72,6 +72,9 @@ flutter:
     - assets/partly_cloudy_animation.json
     - assets/fog_animation.json
     - assets/loading_animation.json
+    - assets/moon_animation.json
+    - assets/moon_rain_animation.json
+    - assets/moon_cloudy_animation.json
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
