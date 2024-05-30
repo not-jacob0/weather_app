@@ -17,8 +17,11 @@ class WeatherSearchBar extends StatelessWidget {
         ),
       ),
       child: SearchBar(
-        surfaceTintColor: MaterialStateColor.resolveWith((states) {return Colors.transparent;}),
-        hintStyle: MaterialStateProperty.all(Theme.of(context).textTheme.bodyMedium),
+        surfaceTintColor: MaterialStateColor.resolveWith((states) {
+          return Colors.transparent;
+        }),
+        hintStyle:
+            MaterialStateProperty.all(Theme.of(context).textTheme.bodyMedium),
         backgroundColor: MaterialStateProperty.all(Colors.transparent),
         controller: controller,
         hintText: "Szukaj",

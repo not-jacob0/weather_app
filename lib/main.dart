@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/digest_weather_data.dart';
 import 'package:weather_app/models/theme/theme_provider.dart';
-import 'package:weather_app/search_bar.dart';
+import 'package:weather_app/components/search_bar.dart';
 import 'package:weather_app/services/weather_api.dart';
 import 'package:weather_app/services/location_service.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/weather_tile.dart';
+import 'package:weather_app/components/weather_tile.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
 
-          SizedBox(height:20.0),
+          SizedBox(height: 20.0),
 
           //TERAZ - GODZINOWA - NA 16 DNI
           TabBar(
