@@ -22,13 +22,13 @@ class _WeatherTileState extends State<WeatherTile> {
         children: [
           Text(
             '${widget.weather?.hour}:00',
-            style: const TextStyle(fontSize: 18.0),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           Row(
             children: [
               Text(
                 '${widget.weather?.temperature}\u2103',
-                style: const TextStyle(fontSize: 18.0),
+                style: Theme.of(context).textTheme.bodyMedium, 
               ),
               Lottie.asset(
                 animation(widget.weather?.weatherCode,widget.weather?.day),

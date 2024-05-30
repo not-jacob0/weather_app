@@ -8,7 +8,6 @@ import 'package:weather_app/services/location_service.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/weather_tile.dart';
-import 'package:weather_app/models/theme/theme.dart';
 
 void main() {
   runApp(
@@ -77,11 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void toggleTheme() {
-
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -96,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.menu),
+                  color: Theme.of(context).colorScheme.tertiary,
                   onPressed: () {
                     Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
                   },
@@ -119,10 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(top: 32.0),
             child: Text(
               city.toUpperCase(),
-              style: TextStyle(
-                fontSize: 32.0,
-                color: Theme.of(context).colorScheme.tertiary
-              ),
+              style: Theme.of(context).textTheme.headlineLarge, 
             ),
           ),
 
@@ -138,16 +130,17 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text(
                 "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode,currentWeather?.day)}",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14.0, 
-                  color: Theme.of(context).colorScheme.secondary,
-                  )
+                style: Theme.of(context).textTheme.bodyMedium, 
                 ),
           ),
 
-          TabBar(tabs: [
+          TabBar(
+            unselectedLabelStyle: Theme.of(context).textTheme.titleMedium,
+            labelStyle: Theme.of(context).textTheme.titleMedium ,
+            tabs: [
             Tab(
               text: "TERAZ",
+
             ),
             Tab(text: "GODZINOWA"),
             Tab(text: "NA 16 DNI")
