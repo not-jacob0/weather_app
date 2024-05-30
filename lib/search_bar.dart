@@ -9,19 +9,27 @@ class WeatherSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        // width: MediaQuery.of(context).size.width * 0.5,
-        padding: EdgeInsets.symmetric(horizontal: 0.0),
-        child: SearchBar(
-          controller: controller,
-          hintText: "Szukaj",
-          leading: Icon(Icons.search),
-          trailing: <Widget>[
-            GestureDetector(
-              onTap: onSubmitted,
-              child: const Icon(Icons.add),
-            )
-          ],
-          shadowColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
-        ));
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32.0),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.tertiary, // Kolor obramowania
+          width: 1.0, // Grubość obramowania
+        ),
+      ),
+      child: SearchBar(
+        surfaceTintColor: MaterialStateColor.resolveWith((states) {return Colors.transparent;}),
+        hintStyle: MaterialStateProperty.all(Theme.of(context).textTheme.bodyMedium),
+        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        controller: controller,
+        hintText: "Szukaj",
+        trailing: <Widget>[
+          GestureDetector(
+            onTap: onSubmitted,
+            child: const Icon(Icons.search),
+          )
+        ],
+        shadowColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
+      ),
+    );
   }
 }

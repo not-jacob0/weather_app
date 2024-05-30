@@ -10,12 +10,10 @@ import 'package:lottie/lottie.dart';
 import 'package:weather_app/weather_tile.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
-    )
-  );
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: Provider.of<ThemeProvider>(context).themeData ,
+      theme: Provider.of<ThemeProvider>(context).themeData,
       home: const MyHomePage(),
     );
   }
@@ -54,21 +52,22 @@ class _MyHomePageState extends State<MyHomePage> {
   void getWeather(String cityToCheck) async {
     try {
       setState(() {});
-      CurrentWeather fetchedCurrWeather = await weatherApi.getCurrentWeather(cityToCheck);
-      List<HourlyWeather> fetchedHourlyWeather = await weatherApi.getHourlyWeather(cityToCheck);
+      CurrentWeather fetchedCurrWeather =
+          await weatherApi.getCurrentWeather(cityToCheck);
+      List<HourlyWeather> fetchedHourlyWeather =
+          await weatherApi.getHourlyWeather(cityToCheck);
       setState(() {
         currentWeather = fetchedCurrWeather;
-        hourlyWeatherList= fetchedHourlyWeather;
+        hourlyWeatherList = fetchedHourlyWeather;
       });
       city = cityToCheck;
-    } catch(e) {
+    } catch (e) {
       print("Błąd pobierania danych o pogodzie: $e");
     }
   }
 
   void getWeatherFromLocation() async {
     try {
-      
       city = await getCity();
       getWeather(city);
     } catch (exn) {
@@ -92,7 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.menu),
                   color: Theme.of(context).colorScheme.tertiary,
                   onPressed: () {
-                    Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                    Provider.of<ThemeProvider>(context, listen: false)
+                        .toggleTheme();
                   },
                 ),
 
@@ -114,51 +114,58 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(top: 32.0),
             child: Text(
               city.toUpperCase(),
-              style: Theme.of(context).textTheme.headlineLarge, 
+              style: Theme.of(context).textTheme.displaySmall,
             ),
           ),
 
           //Animation
           Lottie.asset(
-            animation(currentWeather?.weatherCode,currentWeather?.day),
-            height: 150,
+            animation(currentWeather?.weatherCode, currentWeather?.day),
+            height: 180,
           ),
 
           //Temperature
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-                "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode,currentWeather?.day)}",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium, 
-                ),
+              currentWeather == null
+                  ? ""
+                  : "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode, currentWeather?.day)}",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
 
+          SizedBox(height:20.0),
+
+          //TERAZ - GODZINOWA - NA 16 DNI
           TabBar(
-            unselectedLabelStyle: Theme.of(context).textTheme.titleMedium,
-            labelStyle: Theme.of(context).textTheme.titleMedium ,
-            tabs: [
-            Tab(
-              text: "TERAZ",
+              unselectedLabelStyle: Theme.of(context).textTheme.titleMedium,
+              labelStyle: Theme.of(context).textTheme.titleMedium,
+              labelColor: Theme.of(context).colorScheme.primary,
+              tabs: [
+                Tab(
+                  text: "TERAZ",
+                ),
+                Tab(text: "GODZINOWA"),
+                Tab(text: "NA 16 DNI")
+              ]),
 
-            ),
-            Tab(text: "GODZINOWA"),
-            Tab(text: "NA 16 DNI")
-          ]),
-
+          //Weather display
           Expanded(
             child: TabBarView(children: [
-              Text("TERAZ"),
-
+              const Text("TERAZ"),
               ListView.builder(
-                  itemCount: hourlyWeatherList?[0] == null ? 0 : hourlyWeatherList?.length,
+                  itemCount: hourlyWeatherList?[0] == null
+                      ? 0
+                      : hourlyWeatherList?.length,
                   itemBuilder: (BuildContext context, int index) => Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: WeatherTile(
                           weather: hourlyWeatherList?[index],
                         ),
                       )),
-              Text("NA 16 DNI")
+              const Text("NA 16 DNI")
             ]),
           )
         ]),
