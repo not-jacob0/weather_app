@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_app/digest_weather_data.dart';
+import 'package:weather_app/models/theme/theme_provider.dart';
 import 'package:weather_app/search_bar.dart';
 import 'package:weather_app/services/weather_api.dart';
 import 'package:weather_app/services/location_service.dart';
 import 'package:weather_app/models/weather_model.dart';
-import 'package:weather_app/texts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/weather_tile.dart';
+import 'package:weather_app/models/theme/theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,9 +24,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      theme: Provider.of<ThemeProvider>(context).themeData ,
+      home: const MyHomePage(),
     );
   }
 }
@@ -69,6 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void toggleTheme() {
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.menu),
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                  },
                 ),
 
                 Expanded(
@@ -103,8 +117,12 @@ class _MyHomePageState extends State<MyHomePage> {
           //City name
           Padding(
             padding: const EdgeInsets.only(top: 32.0),
-            child: CityTitle(
-              text: city.toUpperCase(),
+            child: Text(
+              city.toUpperCase(),
+              style: TextStyle(
+                fontSize: 32.0,
+                color: Theme.of(context).colorScheme.tertiary
+              ),
             ),
           ),
 
@@ -120,7 +138,11 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text(
                 "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode)}",
                 textAlign: TextAlign.center,
-                style: MyTextStyle(fontSize: 14.0, color: Colors.grey)),
+                style: TextStyle(
+                  fontSize: 14.0, 
+                  color: Theme.of(context).colorScheme.secondary,
+                  )
+                ),
           ),
 
           TabBar(tabs: [
