@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   WeatherApi weatherApi = WeatherApi();
   CurrentWeather? currentWeather;
   List<HourlyWeather?>? hourlyWeatherList;
+  List<DailyWeather>? dailyWeatherList;
   String city = "";
   final _controller = TextEditingController();
 
@@ -56,9 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
           await weatherApi.getCurrentWeather(cityToCheck);
       List<HourlyWeather> fetchedHourlyWeather =
           await weatherApi.getHourlyWeather(cityToCheck);
+      List<DailyWeather> fetchedDailyWeather =
+          await weatherApi.getDailyWeather(cityToCheck);
       setState(() {
         currentWeather = fetchedCurrWeather;
         hourlyWeatherList = fetchedHourlyWeather;
+        dailyWeatherList = fetchedDailyWeather;
       });
       city = cityToCheck;
     } catch (e) {
@@ -165,7 +169,16 @@ class _MyHomePageState extends State<MyHomePage> {
                           weather: hourlyWeatherList?[index],
                         ),
                       )),
-              const Text("NA 16 DNI")
+              ListView.builder(
+                  itemCount: dailyWeatherList?[0] == null
+                      ? 0
+                      : dailyWeatherList?.length,
+                  itemBuilder: (BuildContext context, int index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: WeatherTile(
+                          weather: dailyWeatherList?[index],
+                        ),
+                      )),
             ]),
           )
         ]),
