@@ -4,9 +4,9 @@ import 'package:weather_app/digest_weather_data.dart';
 import 'package:weather_app/models/weather_model.dart';
 
 class WeatherTile extends StatefulWidget {
-  HourlyWeather? weather;
+  final dynamic weather; // Może to być HourlyWeather, DailyWeather lub CurrentWeather
 
-  WeatherTile({Key? key,required this.weather}) : super(key: key);
+  WeatherTile({Key? key, required this.weather}) : super(key: key);
 
   @override
   State<WeatherTile> createState() => _WeatherTileState();
@@ -15,30 +15,60 @@ class WeatherTile extends StatefulWidget {
 class _WeatherTileState extends State<WeatherTile> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.all(4.0), // Usunięcie domyślnego wewnętrznego wypełnienia ListTile
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Wyrównanie elementów do krawędzi
-        children: [
-          Text(
-            '${widget.weather?.hour}:00',
-            style: const TextStyle(fontSize: 18.0),
-          ),
-          Row(
-            children: [
-              Text(
-                '${widget.weather?.temperature}\u2103',
-                style: const TextStyle(fontSize: 18.0),
-              ),
-              Lottie.asset(
-                animation(weatherDescription(widget.weather?.weatherCode)),
-                height: 40.0
-                
+    if (widget.weather is HourlyWeather) {
+      HourlyWeather hourlyWeather = widget.weather;
+      return ListTile(
+        contentPadding: EdgeInsets.all(4.0),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${hourlyWeather.hour}:00',
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${hourlyWeather.temperature}\u2103',
+                  style: const TextStyle(fontSize: 18.0),
                 ),
-            ],
-          ),
-        ],
-      ),
-    );
+                Lottie.asset(
+                  animation(weatherDescription(hourlyWeather.weatherCode)),
+                  height: 40.0,
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    } else if (widget.weather is DailyWeather) {
+      DailyWeather dailyWeather = widget.weather;
+      return ListTile(
+        contentPadding: EdgeInsets.all(4.0),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              dailyWeather.day,
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${dailyWeather.maxTemperature}\u2103 / ${dailyWeather.minTemperature}\u2103',
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                Lottie.asset(
+                  animation(weatherDescription(dailyWeather.weatherCode)),
+                  height: 40.0,
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }

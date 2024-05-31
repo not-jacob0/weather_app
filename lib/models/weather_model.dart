@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 //tutaj beda zawarte najwazniejsze informacje o pogodzie
 
 class CurrentWeather {
@@ -44,14 +45,37 @@ class HourlyWeather extends CurrentWeather {
 }
 
 class DailyWeather extends CurrentWeather {
-  String date;
+  String day;
+  double minTemperature;
+  double maxTemperature;
 
   DailyWeather({
-    required this.date,
-    required weatherCode,
-    required temperature
+    required this.day,
+    required this.minTemperature,
+    required this.maxTemperature,
+    required int weatherCode,
+    required double temperature
   }) : super(weatherCode: weatherCode, temperature: temperature);
-}
 
-//https://api.openweathermap.org/data/2.5/weather?q=Wroc%C5%82aw&appid=0943f00e7daf62d1b525cbc9d8f605e0&units=metric
-//kubus tu masz linka jak to wyglada jak cos 
+  factory DailyWeather.fromJson(Map<String, dynamic> json, int index) {
+    List<String> days = [
+      "Poniedziałek",
+      "Wtorek",
+      "Środa",
+      "Czwartek",
+      "Piątek",
+      "Sobota",
+      "Niedziela"
+    ];
+    DateTime now = DateTime.now();
+    int weekDay = (now.weekday - 1 + index) % 7;
+
+    return DailyWeather(
+      day: days[weekDay],
+      minTemperature: json['daily']['temperature_2m_min'][index],
+      maxTemperature: json['daily']['temperature_2m_max'][index],
+      weatherCode: json['daily']['weather_code'][index],
+      temperature: (json['daily']['temperature_2m_max'][index] + json['daily']['temperature_2m_min'][index]) / 2, //srednia
+    );
+  }
+}

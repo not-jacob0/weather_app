@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   WeatherApi weatherApi = WeatherApi();
   CurrentWeather? currentWeather;
   List<HourlyWeather?>? hourlyWeatherList;
+  List<DailyWeather>? dailyWeatherList;
   String city = "";
   final _controller = TextEditingController();
 
@@ -49,9 +50,11 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {});
       CurrentWeather fetchedCurrWeather = await weatherApi.getCurrentWeather(cityToCheck);
       List<HourlyWeather> fetchedHourlyWeather = await weatherApi.getHourlyWeather(cityToCheck);
+      List<DailyWeather> fetchedDailyWeather = await weatherApi.getDailyWeather(cityToCheck);
       setState(() {
         currentWeather = fetchedCurrWeather;
-        hourlyWeatherList= fetchedHourlyWeather;
+        hourlyWeatherList = fetchedHourlyWeather;
+        dailyWeatherList = fetchedDailyWeather;
       });
       city = cityToCheck;
     } catch(e) {
@@ -136,14 +139,22 @@ class _MyHomePageState extends State<MyHomePage> {
               Text("TERAZ"),
 
               ListView.builder(
-                  itemCount: hourlyWeatherList?[0] == null ? 0 : hourlyWeatherList?.length,
-                  itemBuilder: (BuildContext context, int index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: WeatherTile(
-                          weather: hourlyWeatherList?[index],
-                        ),
-                      )),
-              Text("NA 16 DNI")
+                itemCount: hourlyWeatherList?[0] == null ? 0 : hourlyWeatherList?.length,
+                itemBuilder: (BuildContext context, int index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: WeatherTile(
+                        weather: hourlyWeatherList?[index],
+                      ),
+                    )),
+              ListView.builder(
+                itemCount: dailyWeatherList?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: WeatherTile(
+                    weather: dailyWeatherList?[index],
+                  ),
+                ),
+              ),
             ]),
           )
         ]),
