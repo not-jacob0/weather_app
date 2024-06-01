@@ -5,7 +5,9 @@ import 'package:weather_app/models/theme/theme_provider.dart';
 import 'package:weather_app/components/search_bar.dart';
 import 'package:weather_app/services/weather_api.dart';
 import 'package:weather_app/services/location_service.dart';
-import 'package:weather_app/models/weather_model.dart';
+import 'package:weather_app/models/weather/daily_weather.dart';
+import 'package:weather_app/models/weather/hourly_weather.dart';
+import 'package:weather_app/models/weather/current_weather.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/components/weather_tile.dart';
 
@@ -152,13 +154,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   text: "TERAZ",
                 ),
                 Tab(text: "GODZINOWA"),
-                Tab(text: "NA 16 DNI")
+                Tab(text: "NA 7 DNI")
               ]),
 
           //Weather display
           Expanded(
             child: TabBarView(children: [
-              const Text("TERAZ"),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Prędkość wiatru: ${currentWeather?.windSpeed ?? 'N/A'} km/h",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    "Szansa na opady: ${currentWeather?.precipitation ?? 'N/A'}%",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    "Zachmurzenie: ${currentWeather?.cloudCover ?? 'N/A'}%",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
               ListView.builder(
                   itemCount: hourlyWeatherList?[0] == null
                       ? 0

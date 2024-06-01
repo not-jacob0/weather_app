@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/digest_weather_data.dart';
-import 'package:weather_app/models/weather_model.dart';
+import 'package:weather_app/models/weather/daily_weather.dart';
+import 'package:weather_app/models/weather/hourly_weather.dart';
 
 class WeatherTile extends StatefulWidget {
   final dynamic weather; 
