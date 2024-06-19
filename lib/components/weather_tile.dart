@@ -7,7 +7,7 @@ import 'package:weather_app/models/weather/hourly_weather.dart';
 class WeatherTile extends StatefulWidget {
   final dynamic weather; 
 
-  WeatherTile({Key? key, required this.weather}) : super(key: key);
+  const WeatherTile({Key? key, required this.weather}) : super(key: key);
 
   @override
   State<WeatherTile> createState() => _WeatherTileState();

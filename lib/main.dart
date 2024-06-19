@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/components/info_tile.dart';
 import 'package:weather_app/digest_weather_data.dart';
 import 'package:weather_app/models/theme/theme_provider.dart';
 import 'package:weather_app/components/search_bar.dart';
@@ -161,22 +162,29 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: TabBarView(children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Prędkość wiatru: ${currentWeather?.windSpeed ?? 'N/A'} km/h",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Text(
-                    "Szansa na opady: ${currentWeather?.precipitation ?? 'N/A'}%",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Text(
-                    "Zachmurzenie: ${currentWeather?.cloudCover ?? 'N/A'}%",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
+                  InfoTile(leading: "Opady:", trailing: currentWeather?.precipitation == null ? "" : "${currentWeather?.precipitation}%"),
+                  InfoTile(leading: "Prędkość wiatru:", trailing: currentWeather?.windSpeed == null ? "" : "${currentWeather?.windSpeed} km/h"), 
+                  InfoTile(leading: "Zachmurzenie:", trailing: currentWeather?.cloudCover == null ? "" : "${currentWeather?.cloudCover}%")
                 ],
               ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Text(
+              //       "Prędkość wiatru: ${currentWeather?.windSpeed ?? 'N/A'} km/h",
+              //       style: Theme.of(context).textTheme.bodyMedium,
+              //     ),
+              //     Text(
+              //       "Szansa na opady: ${currentWeather?.precipitation ?? 'N/A'}%",
+              //       style: Theme.of(context).textTheme.bodyMedium,
+              //     ),
+              //     Text(
+              //       "Zachmurzenie: ${currentWeather?.cloudCover ?? 'N/A'}%",
+              //       style: Theme.of(context).textTheme.bodyMedium,
+              //     ),
+              //   ],
+              // ),
               ListView.builder(
                   itemCount: hourlyWeatherList?[0] == null
                       ? 0
@@ -186,7 +194,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: WeatherTile(
                           weather: hourlyWeatherList?[index],
                         ),
-                      )),
+                      )
+              ),
               ListView.builder(
                   itemCount: dailyWeatherList?[0] == null
                       ? 0
@@ -196,11 +205,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: WeatherTile(
                           weather: dailyWeatherList?[index],
                         ),
-                      )),
-            ]),
-          )
-        ]),
-      ),
+                      )
+                ),
+            ])
+          ),
+        ])
+      )
     );
   }
 }
