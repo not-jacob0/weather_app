@@ -48,6 +48,7 @@ WeatherApi - obsługuje update'owanie danych z pogodowego API, którego używamy
 
 https://www.youtube.com/watch?v=-jdtfJe_sII&ab_channel=MitchKoko
 https://www.youtube.com/watch?v=yLtpMqvMgdY&ab_channel=MitchKoko
+https://open-meteo.com/
 
 ## Autorzy
 Mateusz Matyskiel
