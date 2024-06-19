@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  String getTemperatureString(double? temperature) {
+  String changeTemperature(double? temperature) {
     if (temperature == null) return "";
     if (isCelsius) {
       return "${temperature.round()}\u2103";
@@ -92,7 +92,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void changeTemperatureUnits() {
+  String changeWindSpeed(double? speed) {
+    if (speed == null) return "";
+    if (isCelsius) {
+      return "${speed.toStringAsFixed(1)} km/h";
+    } else {
+      return "${(speed * 0.6214).toStringAsFixed(1)} mph";
+    }
+  }
+  
+  void changeUnits() {
     setState(() {
       isCelsius = !isCelsius;
     });
@@ -122,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(isCelsius ? Icons.thermostat : Icons.thermostat_outlined),
                   color: Theme.of(context).colorScheme.tertiary,
                   onPressed: () {
-                    changeTemperatureUnits();
+                    changeUnits();
                   },
                 ),
                 Expanded(
@@ -159,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text(
               currentWeather == null
                   ? ""
-                  : "${getTemperatureString(currentWeather?.temperature)}\n${weatherDescription(currentWeather?.weatherCode, currentWeather?.day)}",
+                  : "${changeTemperature(currentWeather?.temperature)}\n${weatherDescription(currentWeather?.weatherCode, currentWeather?.day)}",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -186,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Column(
                 children: [
                   InfoTile(leading: "Opady:", trailing: currentWeather?.precipitation == null ? "" : "${currentWeather?.precipitation}%"),
-                  InfoTile(leading: "Prędkość wiatru:", trailing: currentWeather?.windSpeed == null ? "" : "${currentWeather?.windSpeed} km/h"), 
+                  InfoTile(leading: "Prędkość wiatru:", trailing: currentWeather?.windSpeed == null ? "" : changeWindSpeed(currentWeather?.windSpeed)), 
                   InfoTile(leading: "Zachmurzenie:", trailing: currentWeather?.cloudCover == null ? "" : "${currentWeather?.cloudCover}%")
                 ],
               ),
