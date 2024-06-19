@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<HourlyWeather?>? hourlyWeatherList;
   List<DailyWeather>? dailyWeatherList;
   String city = "";
+  bool isCelsius = true;
   final _controller = TextEditingController();
 
   @override
@@ -82,6 +83,21 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  String getTemperatureString(double? temperature) {
+    if (temperature == null) return "";
+    if (isCelsius) {
+      return "${temperature.round()}\u2103";
+    } else {
+      return "${(temperature * (9 / 5) + 32).round()}\u2109";
+    }
+  }
+
+  void changeTemperatureUnits() {
+    setState(() {
+      isCelsius = !isCelsius;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -102,7 +118,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         .toggleTheme();
                   },
                 ),
-
+                IconButton(
+                  icon: Icon(isCelsius ? Icons.thermostat : Icons.thermostat_outlined),
+                  color: Theme.of(context).colorScheme.tertiary,
+                  onPressed: () {
+                    changeTemperatureUnits();
+                  },
+                ),
                 Expanded(
                   child: WeatherSearchBar(
                     controller: _controller,
@@ -137,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text(
               currentWeather == null
                   ? ""
-                  : "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode, currentWeather?.day)}",
+                  : "${getTemperatureString(currentWeather?.temperature)}\n${weatherDescription(currentWeather?.weatherCode, currentWeather?.day)}",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -193,6 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: WeatherTile(
                           weather: hourlyWeatherList?[index],
+                          isCelsius: isCelsius,
                         ),
                       )
               ),
@@ -204,6 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: WeatherTile(
                           weather: dailyWeatherList?[index],
+                          isCelsius: isCelsius,
                         ),
                       )
                 ),
