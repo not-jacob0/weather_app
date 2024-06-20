@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<HourlyWeather?>? hourlyWeatherList;
   List<DailyWeather>? dailyWeatherList;
   String city = "";
+  bool isCelsius = true;
   final _controller = TextEditingController();
 
   @override
@@ -82,6 +83,30 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  String changeTemperature(double? temperature) {
+    if (temperature == null) return "";
+    if (isCelsius) {
+      return "${temperature.round()}\u2103";
+    } else {
+      return "${(temperature * (9 / 5) + 32).round()}\u2109";
+    }
+  }
+
+  String changeWindSpeed(double? speed) {
+    if (speed == null) return "";
+    if (isCelsius) {
+      return "${speed.toStringAsFixed(1)} km/h";
+    } else {
+      return "${(speed * 0.6214).toStringAsFixed(1)} mph";
+    }
+  }
+  
+  void changeUnits() {
+    setState(() {
+      isCelsius = !isCelsius;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -102,7 +127,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         .toggleTheme();
                   },
                 ),
-
+                IconButton(
+                  icon: Icon(isCelsius ? Icons.thermostat : Icons.thermostat_outlined),
+                  color: Theme.of(context).colorScheme.tertiary,
+                  onPressed: () {
+                    changeUnits();
+                  },
+                ),
                 Expanded(
                   child: WeatherSearchBar(
                     controller: _controller,
@@ -137,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text(
               currentWeather == null
                   ? ""
-                  : "${currentWeather?.temperature.round()}\u2103\n${weatherDescription(currentWeather?.weatherCode, currentWeather?.day)}",
+                  : "${changeTemperature(currentWeather?.temperature)}\n${weatherDescription(currentWeather?.weatherCode, currentWeather?.day)}",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -164,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Column(
                 children: [
                   InfoTile(leading: "Opady:", trailing: currentWeather?.precipitation == null ? "" : "${currentWeather?.precipitation}%"),
-                  InfoTile(leading: "Prędkość wiatru:", trailing: currentWeather?.windSpeed == null ? "" : "${currentWeather?.windSpeed} km/h"), 
+                  InfoTile(leading: "Prędkość wiatru:", trailing: currentWeather?.windSpeed == null ? "" : changeWindSpeed(currentWeather?.windSpeed)), 
                   InfoTile(leading: "Zachmurzenie:", trailing: currentWeather?.cloudCover == null ? "" : "${currentWeather?.cloudCover}%")
                 ],
               ),
@@ -193,6 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: WeatherTile(
                           weather: hourlyWeatherList?[index],
+                          isCelsius: isCelsius,
                         ),
                       )
               ),
@@ -204,6 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: WeatherTile(
                           weather: dailyWeatherList?[index],
+                          isCelsius: isCelsius,
                         ),
                       )
                 ),
