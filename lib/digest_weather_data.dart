@@ -105,15 +105,15 @@ String weatherDescription(int? weatherCode, bool? day) {
     case 77:
       return "Ziarnisty śnieg";
     case 80:
-      return "Lekki deszczowy przelotny";
+      return "Lekki przelotny deszcz";
     case 81:
-      return "Umiarkowany deszczowy przelotny";
+      return "Umiarkowany przelotny deszcz";
     case 82:
-      return "Gwałtowny deszczowy przelotny";
+      return "Gwałtowny przelotny deszcz";
     case 85:
-      return "Lekki śnieżny przelotny";
+      return "Lekki przelotny śnieg";
     case 86:
-      return "Intensywny śnieżny przelotny";
+      return "Intensywny przelotny śnieg";
     case 95:
       return "Słaba burza";
     case 96:
